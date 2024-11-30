@@ -9,7 +9,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.JwtAuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
-let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
+let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)("jwt") {
+    getRequest(context) {
+        const request = context.switchToHttp().getRequest();
+        const token = request.cookies["access_token"];
+        if (!token) {
+            throw new Error("Token not found in cookies");
+        }
+        request.headers["authorization"] = `Bearer ${token}`;
+        return request;
+    }
 };
 exports.JwtAuthGuard = JwtAuthGuard;
 exports.JwtAuthGuard = JwtAuthGuard = __decorate([

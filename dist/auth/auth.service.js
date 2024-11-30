@@ -59,10 +59,7 @@ let AuthService = class AuthService {
             expiresIn: this.configService.get('jwt.refreshExpiresIn'),
         });
         await this.administrateurModel.update({ dernier_login: new Date() }, { where: { id: user.id } });
-        return {
-            access_token: accessToken,
-            refresh_token: refreshToken,
-        };
+        return { accessToken, refreshToken };
     }
     async refreshToken(refreshToken) {
         try {
@@ -71,18 +68,41 @@ let AuthService = class AuthService {
             });
             const user = await this.administrateurModel.findByPk(payload.sub);
             if (!user) {
-                throw new common_1.UnauthorizedException();
+                throw new common_1.UnauthorizedException('Utilisateur non trouvé.');
             }
             const newPayload = { email: user.email, sub: user.id, role: user.role };
-            return {
-                access_token: this.jwtService.sign(newPayload, {
-                    secret: this.configService.get('jwt.accessSecret'),
-                    expiresIn: this.configService.get('jwt.accessExpiresIn'),
-                }),
-            };
+            const accessToken = this.jwtService.sign(newPayload, {
+                secret: this.configService.get('jwt.accessSecret'),
+                expiresIn: this.configService.get('jwt.accessExpiresIn'),
+            });
+            console.log("access token", accessToken);
+            return { accessToken };
         }
-        catch {
-            throw new common_1.UnauthorizedException();
+        catch (error) {
+            if (error.name === 'TokenExpiredError') {
+                throw new common_1.UnauthorizedException('Le token de rafraîchissement a expiré.');
+            }
+            throw new common_1.UnauthorizedException('Token de rafraîchissement invalide.');
+        }
+    }
+    async logout(userId) {
+        await this.administrateurModel.update({ refreshTokenInvalidatedAt: new Date() }, { where: { id: userId } });
+        return { message: 'Déconnexion réussie.' };
+    }
+    async getUserFromAccessToken(accessToken) {
+        try {
+            const payload = this.jwtService.verify(accessToken, {
+                secret: this.configService.get('jwt.accessSecret'),
+            });
+            const user = await this.administrateurModel.findByPk(payload.sub);
+            if (!user) {
+                throw new common_1.UnauthorizedException('Utilisateur non trouvé.');
+            }
+            const { mot_de_passe, ...result } = user.toJSON();
+            return result;
+        }
+        catch (error) {
+            throw new common_1.UnauthorizedException('Token invalide ou expiré.');
         }
     }
 };

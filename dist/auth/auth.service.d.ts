@@ -10,10 +10,14 @@ export declare class AuthService {
     validateUser(email: string, password: string): Promise<any>;
     register(registerDto: RegisterDto): Promise<any>;
     login(user: any): Promise<{
-        access_token: string;
-        refresh_token: string;
+        accessToken: string;
+        refreshToken: string;
     }>;
     refreshToken(refreshToken: string): Promise<{
-        access_token: string;
+        accessToken: string;
     }>;
+    logout(userId: number): Promise<{
+        message: string;
+    }>;
+    getUserFromAccessToken(accessToken: string): Promise<any>;
 }

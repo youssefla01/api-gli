@@ -19,6 +19,7 @@ const paiements_module_1 = require("./modules/paiements/paiements.module");
 const documents_biens_module_1 = require("./modules/documents-biens/documents-biens.module");
 const releves_mensuels_module_1 = require("./modules/releves-mensuels/releves-mensuels.module");
 const notifications_module_1 = require("./modules/notifications/notifications.module");
+const administrateurs_module_1 = require("./modules/administrateurs/administrateurs.module");
 const database_config_1 = require("./config/database.config");
 const jwt_config_1 = require("./config/jwt.config");
 const administrateur_model_1 = require("./models/administrateur.model");
@@ -63,6 +64,7 @@ exports.AppModule = AppModule = __decorate([
             documents_biens_module_1.DocumentsBiensModule,
             releves_mensuels_module_1.RelevesMensuelsModule,
             notifications_module_1.NotificationsModule,
+            administrateurs_module_1.AdministrateursModule,
         ],
     })
 ], AppModule);

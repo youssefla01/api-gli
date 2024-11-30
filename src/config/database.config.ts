@@ -7,12 +7,12 @@ export default registerAs('database', () => ({
   username: process.env.DB_USERNAME || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'gli_dev',
-  autoLoadModels: true,
-  synchronize: true,
-  sync: {
-    force: true,
-    alter: true
-  },
+  // autoLoadModels: true,
+  // synchronize: true,
+  // sync: {
+  //   force: true,
+  //   alter: true
+  // },
   logging: console.log,
   pool: {
     max: 5,
