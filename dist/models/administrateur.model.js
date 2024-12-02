@@ -54,6 +54,14 @@ __decorate([
     (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.DATE),
     __metadata("design:type", Date)
 ], Administrateur.prototype, "date_mise_a_jour", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.ENUM('active', 'inactive'),
+        defaultValue: 'active',
+        allowNull: false,
+    }),
+    __metadata("design:type", String)
+], Administrateur.prototype, "status", void 0);
 exports.Administrateur = Administrateur = __decorate([
     (0, sequelize_typescript_1.Table)({ tableName: 'administrateurs' })
 ], Administrateur);

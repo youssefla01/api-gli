@@ -93,4 +93,17 @@ export class AdministrateursService {
       date_mise_a_jour: new Date(),
     });
   }
+
+  async updateStatus(id: string, status: 'active' | 'inactive') {
+    const administrateur = await this.administrateurModel.findByPk(id);
+    if (!administrateur) {
+      throw new NotFoundException('Administrateur non trouvé.');
+    }
+  
+    administrateur.status = status;
+    await administrateur.save();
+  
+    return { message: 'Statut mis à jour avec succès.', administrateur };
+  }
+  
 }
