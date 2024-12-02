@@ -5,6 +5,12 @@ declare const _default: (() => {
     username: string;
     password: string;
     database: string;
+    autoLoadModels: boolean;
+    synchronize: boolean;
+    sync: {
+        force: boolean;
+        alter: boolean;
+    };
     logging: {
         (...data: any[]): void;
         (message?: any, ...optionalParams: any[]): void;
@@ -22,6 +28,12 @@ declare const _default: (() => {
     username: string;
     password: string;
     database: string;
+    autoLoadModels: boolean;
+    synchronize: boolean;
+    sync: {
+        force: boolean;
+        alter: boolean;
+    };
     logging: {
         (...data: any[]): void;
         (message?: any, ...optionalParams: any[]): void;

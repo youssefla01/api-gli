@@ -13,6 +13,16 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
 import { AdministrateursModule } from './modules/administrateurs/administrateurs.module';
 import databaseConfig from './config/database.config';
 import jwtConfig from './config/jwt.config';
+import { Administrateur } from './models/administrateur.model';
+import { Proprietaire } from './models/proprietaire.model';
+import { Locataire } from './models/locataire.model';
+import { Bien } from './models/bien.model';
+import { Paiement } from './models/paiement.model';
+import { DocumentBien } from './models/document-bien.model';
+import { ReleveMensuel } from './models/releve-mensuel.model';
+import { Notification } from './models/notification.model';
+import { Bail } from './models/bail.model';
+
 
 @Module({
   imports: [
@@ -22,26 +32,19 @@ import jwtConfig from './config/jwt.config';
     }),
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        dialect: 'mysql',
-        host: configService.get('database.host'),
-        port: configService.get('database.port'),
-        username: configService.get('database.username'),
-        password: configService.get('database.password'),
-        database: configService.get('database.database'),
-        models: [__dirname + '/models'],
-        autoLoadModels: true,
+      useFactory: (configService: ConfigService) => ({
+        ...configService.get('database'),
         synchronize: true,
         sync: {
-          force: true,
+          force: true, 
           alter: true
-        },
-        logging: console.log
+        },  
+        logging: console.log, 
+        models: [Administrateur, Proprietaire, Locataire, Bail, Bien, Paiement, DocumentBien, ReleveMensuel, Notification],
       }),
+      inject: [ConfigService],
     }),
     AuthModule,
-    AdministrateursModule,
     ProprietairesModule,
     LocatairesModule,
     BiensModule,
@@ -50,6 +53,7 @@ import jwtConfig from './config/jwt.config';
     DocumentsBiensModule,
     RelevesMensuelsModule,
     NotificationsModule,
+    AdministrateursModule,
   ],
 })
 export class AppModule {}

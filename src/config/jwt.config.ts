@@ -6,4 +6,3 @@ export default registerAs('jwt', () => ({
   accessExpiresIn: '15m',
   refreshExpiresIn: '7d',
 }));
-console.log('verifier token',process.env.JWT_ACCESS_SECRET)

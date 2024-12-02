@@ -32,21 +32,61 @@ __decorate([
     __metadata("design:type", String)
 ], Locataire.prototype, "prenom", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING(100), unique: true }),
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.DATE),
+    __metadata("design:type", Date)
+], Locataire.prototype, "date_naissance", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING(100)),
     __metadata("design:type", String)
-], Locataire.prototype, "email", void 0);
+], Locataire.prototype, "lieu_naissance", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING(20)),
+    __metadata("design:type", String)
+], Locataire.prototype, "genre", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING(50)),
+    __metadata("design:type", String)
+], Locataire.prototype, "situation_familiale", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.INTEGER),
+    __metadata("design:type", Number)
+], Locataire.prototype, "nombre_enfants", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING(50)),
+    __metadata("design:type", String)
+], Locataire.prototype, "nationalite", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING(15)),
     __metadata("design:type", String)
 ], Locataire.prototype, "telephone", void 0);
 __decorate([
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING(100), unique: true }),
+    __metadata("design:type", String)
+], Locataire.prototype, "email", void 0);
+__decorate([
     (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.TEXT),
     __metadata("design:type", String)
-], Locataire.prototype, "adresse", void 0);
+], Locataire.prototype, "adresse_principale", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING(20)),
+    __metadata("design:type", String)
+], Locataire.prototype, "contact_urgence", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING(20)),
+    __metadata("design:type", String)
+], Locataire.prototype, "cin", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.TEXT),
     __metadata("design:type", String)
 ], Locataire.prototype, "piece_identite", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.TEXT),
+    __metadata("design:type", String)
+], Locataire.prototype, "piece_jointe", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.TEXT),
+    __metadata("design:type", String)
+], Locataire.prototype, "commentaire", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING(20), defaultValue: 'Actif' }),
     __metadata("design:type", String)

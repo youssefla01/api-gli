@@ -35,6 +35,9 @@ let AuthController = class AuthController {
         if (!user) {
             throw new common_1.UnauthorizedException("Identifiants invalides");
         }
+        if (user.status === "inactive") {
+            throw new common_1.UnauthorizedException("Votre compte est inactif. Veuillez contacter l’administrateur.");
+        }
         const { accessToken, refreshToken } = await this.authService.login(user);
         res.cookie("access_token", accessToken, {
             httpOnly: true,
@@ -75,8 +78,8 @@ let AuthController = class AuthController {
             throw new common_1.UnauthorizedException("Token manquant dans les cookies.");
         }
         const user = await this.authService.getUserFromAccessToken(accessToken);
-        const { id, nom, prenom, email, role } = user;
-        return { id, nom, prenom, email, role };
+        const { id, nom, prenom, email, role, status } = user;
+        return { id, nom, prenom, email, role, status };
     }
 };
 exports.AuthController = AuthController;
@@ -94,7 +97,7 @@ __decorate([
     (0, common_1.HttpCode)(200),
     (0, swagger_1.ApiOperation)({ summary: "Se connecter" }),
     (0, swagger_1.ApiResponse)({ status: 200, description: "Connexion réussie." }),
-    (0, swagger_1.ApiResponse)({ status: 401, description: "Identifiants invalides." }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Identifiants invalides ou compte inactif." }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
