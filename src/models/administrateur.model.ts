@@ -32,4 +32,11 @@ export class Administrateur extends Model {
 
   @Column(DataType.DATE)
   date_mise_a_jour: Date;
+
+  @Column({
+    type: DataType.ENUM('active', 'inactive'),
+    defaultValue: 'active',
+    allowNull: false,
+  })
+  status: 'active' | 'inactive';
 }

@@ -7,5 +7,4 @@ exports.default = (0, config_1.registerAs)('jwt', () => ({
     accessExpiresIn: '15m',
     refreshExpiresIn: '7d',
 }));
-console.log('verifier token', process.env.JWT_ACCESS_SECRET);
 //# sourceMappingURL=jwt.config.js.map

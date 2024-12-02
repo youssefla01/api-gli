@@ -9,4 +9,5 @@ export declare class Administrateur extends Model {
     dernier_login: Date;
     date_creation: Date;
     date_mise_a_jour: Date;
+    status: 'active' | 'inactive';
 }
