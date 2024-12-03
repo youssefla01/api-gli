@@ -17,7 +17,7 @@ export class Locataire extends Model {
   prenom: string;
 
   @Column(DataType.DATE)
-  date_naissance: Date;
+  date_naissance?: Date;
 
   @Column(DataType.STRING(100))
   lieu_naissance: string;
@@ -41,7 +41,7 @@ export class Locataire extends Model {
   email: string;
 
   @Column(DataType.TEXT)
-  adresse_principale: string;
+  adresse: string;
 
   @Column(DataType.STRING(20))
   contact_urgence: string; // Nom et numéro de contact urgence combiné

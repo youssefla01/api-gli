@@ -4,7 +4,7 @@ export declare class Locataire extends Model {
     id: string;
     nom: string;
     prenom: string;
-    date_naissance: Date;
+    date_naissance?: Date;
     lieu_naissance: string;
     genre: string;
     situation_familiale: string;
@@ -12,7 +12,7 @@ export declare class Locataire extends Model {
     nationalite: string;
     telephone: string;
     email: string;
-    adresse_principale: string;
+    adresse: string;
     contact_urgence: string;
     cin: string;
     piece_identite: string;
