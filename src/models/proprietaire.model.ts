@@ -23,6 +23,9 @@ export class Proprietaire extends Model {
   @Column(DataType.STRING(15))
   telephone: string;
 
+  @Column(DataType.STRING(15))
+  numero_urgence: string;
+
   @Column(DataType.TEXT)
   adresse: string;
 
@@ -31,6 +34,9 @@ export class Proprietaire extends Model {
 
   @Column(DataType.STRING(34))
   rib: string;
+
+  @Column(DataType.STRING(255))
+  piece_jointe: string; // Stocke le nom ou le chemin du fichier joint
 
   @Column({ type: DataType.DATE, defaultValue: DataType.NOW })
   date_creation: Date;

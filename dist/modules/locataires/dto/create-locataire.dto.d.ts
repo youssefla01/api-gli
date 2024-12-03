@@ -3,7 +3,7 @@ export declare class CreateLocataireDto {
     prenom: string;
     email: string;
     telephone: string;
-    adresse_principale: string;
+    adresse: string;
     cin?: string;
     piece_identite?: string;
     piece_jointe?: string;

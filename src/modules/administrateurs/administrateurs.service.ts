@@ -99,10 +99,10 @@ export class AdministrateursService {
     if (!administrateur) {
       throw new NotFoundException('Administrateur non trouvé.');
     }
-  
+
     administrateur.status = status;
     await administrateur.save();
-  
+
     return { message: 'Statut mis à jour avec succès.', administrateur };
   }
   

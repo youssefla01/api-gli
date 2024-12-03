@@ -66,7 +66,7 @@ __decorate([
 __decorate([
     (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.TEXT),
     __metadata("design:type", String)
-], Locataire.prototype, "adresse_principale", void 0);
+], Locataire.prototype, "adresse", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING(20)),
     __metadata("design:type", String)

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateLocataireDto = void 0;
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
+const class_transformer_1 = require("class-transformer");
 class CreateLocataireDto {
 }
 exports.CreateLocataireDto = CreateLocataireDto;
@@ -42,7 +43,7 @@ __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateLocataireDto.prototype, "adresse_principale", void 0);
+], CreateLocataireDto.prototype, "adresse", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ required: false }),
     (0, class_validator_1.IsOptional)(),
@@ -94,6 +95,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsDate)(),
+    (0, class_transformer_1.Type)(() => Date),
     __metadata("design:type", Date)
 ], CreateLocataireDto.prototype, "date_naissance", void 0);
 __decorate([

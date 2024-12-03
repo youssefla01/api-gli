@@ -1,5 +1,6 @@
 import { IsString, IsEmail, IsOptional, Length, IsDate, IsInt } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class CreateLocataireDto {
   @ApiProperty()
@@ -23,7 +24,7 @@ export class CreateLocataireDto {
 
   @ApiProperty()
   @IsString()
-  adresse_principale: string;
+  adresse: string;
 
   @ApiProperty({ required: false })
   @IsOptional()
@@ -67,6 +68,7 @@ export class CreateLocataireDto {
 
   @ApiProperty()
   @IsDate()
+  @Type(() => Date) 
   date_naissance: Date;
 
   @ApiProperty()
