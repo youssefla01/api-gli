@@ -26,6 +26,10 @@ export class CreateLocataireDto {
   @IsString()
   adresse: string;
 
+  @ApiProperty()
+  @IsString()
+  profession: string;
+
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()

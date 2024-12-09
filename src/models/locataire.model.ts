@@ -42,6 +42,9 @@ export class Locataire extends Model {
 
   @Column(DataType.TEXT)
   adresse: string;
+   
+  @Column(DataType.TEXT)
+  profession : string;
 
   @Column(DataType.STRING(20))
   contact_urgence: string; // Nom et numéro de contact urgence combiné

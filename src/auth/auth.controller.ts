@@ -126,8 +126,7 @@ async login(
     description: "Informations utilisateur récupérées avec succès.",
   })
   async getUserInfo(@Req() req: CustomRequest) {
-    const accessToken = req.cookies["access_token"]; 
-
+    const accessToken = req.cookies["access_token"];
     if (!accessToken) {
       throw new UnauthorizedException("Token manquant dans les cookies.");
     }
