@@ -3,7 +3,9 @@ export declare class CreateProprietaireDto {
     prenom: string;
     email: string;
     telephone: string;
+    numero_urgence: string;
     adresse: string;
     identifiant_fiscal: string;
     rib: string;
+    piece_jointe: string;
 }

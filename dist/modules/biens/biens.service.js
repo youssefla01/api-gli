@@ -16,15 +16,32 @@ exports.BiensService = void 0;
 const common_1 = require("@nestjs/common");
 const sequelize_1 = require("@nestjs/sequelize");
 const bien_model_1 = require("../../models/bien.model");
+const photos_service_1 = require("./photos.service");
+const documents_service_1 = require("./documents.service");
+;
 let BiensService = class BiensService {
-    constructor(bienModel) {
+    constructor(bienModel, photosService, documentsService) {
         this.bienModel = bienModel;
+        this.photosService = photosService;
+        this.documentsService = documentsService;
     }
-    async create(createBienDto) {
-        return this.bienModel.create({
-            ...createBienDto,
-            date_creation: new Date(),
-        });
+    async create(createBienDto, uploadedPhotos, uploadedDocuments) {
+        try {
+            const bien = await this.bienModel.create({
+                ...createBienDto,
+                date_creation: new Date(),
+            });
+            if (uploadedPhotos?.length) {
+                await this.photosService.savePhotos(bien.id, uploadedPhotos);
+            }
+            if (uploadedDocuments?.length) {
+                await this.documentsService.saveDocuments(bien.id, uploadedDocuments);
+            }
+            return bien;
+        }
+        catch (error) {
+            throw new common_1.InternalServerErrorException(`Erreur lors de la création du bien : ${error.message}`);
+        }
     }
     async findAll() {
         return this.bienModel.findAll({
@@ -63,6 +80,7 @@ exports.BiensService = BiensService;
 exports.BiensService = BiensService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, sequelize_1.InjectModel)(bien_model_1.Bien)),
-    __metadata("design:paramtypes", [Object])
+    __metadata("design:paramtypes", [Object, photos_service_1.PhotosService,
+        documents_service_1.DocumentsService])
 ], BiensService);
 //# sourceMappingURL=biens.service.js.map

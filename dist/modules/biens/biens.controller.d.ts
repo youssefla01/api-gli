@@ -1,10 +1,19 @@
 import { BiensService } from './biens.service';
 import { CreateBienDto } from './dto/create-bien.dto';
 import { UpdateBienDto } from './dto/update-bien.dto';
+import { FilesService } from '../FilesModule/files.service';
 export declare class BiensController {
     private readonly biensService;
-    constructor(biensService: BiensService);
-    create(createBienDto: CreateBienDto): Promise<import("../../models/bien.model").Bien>;
+    private readonly filesService;
+    constructor(biensService: BiensService, filesService: FilesService);
+    create(createBienDto: CreateBienDto, files: {
+        photos?: Express.Multer.File[];
+        documents?: Express.Multer.File[];
+    }): Promise<{
+        status: number;
+        message: string;
+        data: import("../../models/bien.model").Bien;
+    }>;
     findAll(): Promise<import("../../models/bien.model").Bien[]>;
     findOne(id: string): Promise<import("../../models/bien.model").Bien>;
     findByProprietaire(id: string): Promise<import("../../models/bien.model").Bien[]>;

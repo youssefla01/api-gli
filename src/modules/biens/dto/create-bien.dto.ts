@@ -1,37 +1,47 @@
-import { IsString, IsNumber, IsUUID, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
+import { IsString, IsOptional, IsUUID, IsNumber } from 'class-validator';
 
 export class CreateBienDto {
-  @ApiProperty()
   @IsString()
-  type: string;
+  readonly type: string;
 
-  @ApiProperty()
   @IsString()
-  adresse: string;
+  readonly adresse: string;
 
-  @ApiProperty()
   @IsString()
-  description: string;
-
-  @ApiProperty()
-  @IsNumber()
-  surface: number;
-
-  @ApiProperty()
-  @IsNumber()
-  nb_pieces: number;
-
-  @ApiProperty({ required: false, default: 'Libre' })
   @IsOptional()
+  readonly description?: string;
+
+
   @IsString()
-  etat?: string;
+  @IsOptional()
+  readonly etat?: string;
 
-  @ApiProperty()
-  @IsNumber()
-  prix_estimatif: number;
-
-  @ApiProperty()
   @IsUUID()
-  proprietaire_id: string;
+  readonly proprietaire_id: string;
+
+  @Transform(({ value }) => (value ? Number(value) : value))
+  @IsNumber()
+  readonly surface?: number;
+
+  @Transform(({ value }) => (value ? Number(value) : value))
+  @IsNumber()
+  readonly nb_pieces?: number;
+
+  @Transform(({ value }) => (value ? Number(value) : value))
+  @IsNumber()
+  readonly prix?: number;
+  @IsString()
+  readonly ref_compteur_eau?: string;
+
+  @IsString()
+  readonly ref_compteur_electricite?: string;
+
+  // Ajouter des fichiers pour documents
+  @ApiProperty({ type: 'string', format: 'binary', required: false, isArray: true })
+  photos?: any[];
+
+  @ApiProperty({ type: 'string', format: 'binary', required: false, isArray: true })
+  documents?: any[];
 }

@@ -31,6 +31,8 @@ const document_bien_model_1 = require("./models/document-bien.model");
 const releve_mensuel_model_1 = require("./models/releve-mensuel.model");
 const notification_model_1 = require("./models/notification.model");
 const bail_model_1 = require("./models/bail.model");
+const files_module_1 = require("./modules/FilesModule/files.module");
+const photo_bien_model_1 = require("./models/photo-bien.model");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -50,8 +52,7 @@ exports.AppModule = AppModule = __decorate([
                         force: true,
                         alter: true
                     },
-                    logging: console.log,
-                    models: [administrateur_model_1.Administrateur, proprietaire_model_1.Proprietaire, locataire_model_1.Locataire, bail_model_1.Bail, bien_model_1.Bien, paiement_model_1.Paiement, document_bien_model_1.DocumentBien, releve_mensuel_model_1.ReleveMensuel, notification_model_1.Notification],
+                    models: [administrateur_model_1.Administrateur, proprietaire_model_1.Proprietaire, locataire_model_1.Locataire, bail_model_1.Bail, bien_model_1.Bien, paiement_model_1.Paiement, document_bien_model_1.DocumentBien, releve_mensuel_model_1.ReleveMensuel, notification_model_1.Notification, photo_bien_model_1.PhotoBien],
                 }),
                 inject: [config_1.ConfigService],
             }),
@@ -65,6 +66,7 @@ exports.AppModule = AppModule = __decorate([
             releves_mensuels_module_1.RelevesMensuelsModule,
             notifications_module_1.NotificationsModule,
             administrateurs_module_1.AdministrateursModule,
+            files_module_1.FilesModule
         ],
     })
 ], AppModule);

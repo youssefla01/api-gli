@@ -1,22 +1,52 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Bien } from '../../models/bien.model';
 import { CreateBienDto } from './dto/create-bien.dto';
 import { UpdateBienDto } from './dto/update-bien.dto';
+import { PhotosService } from './photos.service';
+import { DocumentsService } from './documents.service';
+;
 
 @Injectable()
 export class BiensService {
   constructor(
-    @InjectModel(Bien)
-    private bienModel: typeof Bien,
+    @InjectModel(Bien) private bienModel: typeof Bien,
+    private readonly photosService: PhotosService,
+    private readonly documentsService: DocumentsService,
   ) {}
 
-  async create(createBienDto: CreateBienDto): Promise<Bien> {
-    return this.bienModel.create({
-      ...createBienDto,
-      date_creation: new Date(),
-    });
+  async create(
+    createBienDto: CreateBienDto,
+    uploadedPhotos?: Express.Multer.File[],
+    uploadedDocuments?: Express.Multer.File[],
+  ): Promise<Bien> {
+    try {
+      // Création du bien
+      const bien = await this.bienModel.create({
+        ...createBienDto,
+        date_creation: new Date(),
+      });
+
+      // Gestion des photos
+      if (uploadedPhotos?.length) {
+        await this.photosService.savePhotos(bien.id, uploadedPhotos);
+      }
+
+      // Gestion des documents
+      if (uploadedDocuments?.length) {
+        await this.documentsService.saveDocuments(bien.id, uploadedDocuments);
+      }
+
+      return bien;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `Erreur lors de la création du bien : ${error.message}`,
+      );
+    }
   }
+
+
+
 
   async findAll(): Promise<Bien[]> {
     return this.bienModel.findAll({

@@ -10,50 +10,63 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateBienDto = void 0;
-const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
+const class_transformer_1 = require("class-transformer");
+const class_validator_1 = require("class-validator");
 class CreateBienDto {
 }
 exports.CreateBienDto = CreateBienDto;
 __decorate([
-    (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateBienDto.prototype, "type", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateBienDto.prototype, "adresse", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateBienDto.prototype, "description", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateBienDto.prototype, "etat", void 0);
+__decorate([
+    (0, class_validator_1.IsUUID)(),
+    __metadata("design:type", String)
+], CreateBienDto.prototype, "proprietaire_id", void 0);
+__decorate([
+    (0, class_transformer_1.Transform)(({ value }) => (value ? Number(value) : value)),
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], CreateBienDto.prototype, "surface", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)(),
+    (0, class_transformer_1.Transform)(({ value }) => (value ? Number(value) : value)),
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], CreateBienDto.prototype, "nb_pieces", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ required: false, default: 'Libre' }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], CreateBienDto.prototype, "etat", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)(),
+    (0, class_transformer_1.Transform)(({ value }) => (value ? Number(value) : value)),
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
-], CreateBienDto.prototype, "prix_estimatif", void 0);
+], CreateBienDto.prototype, "prix", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)(),
-    (0, class_validator_1.IsUUID)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateBienDto.prototype, "proprietaire_id", void 0);
+], CreateBienDto.prototype, "ref_compteur_eau", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateBienDto.prototype, "ref_compteur_electricite", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ type: 'string', format: 'binary', required: false, isArray: true }),
+    __metadata("design:type", Array)
+], CreateBienDto.prototype, "photos", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ type: 'string', format: 'binary', required: false, isArray: true }),
+    __metadata("design:type", Array)
+], CreateBienDto.prototype, "documents", void 0);
 //# sourceMappingURL=create-bien.dto.js.map

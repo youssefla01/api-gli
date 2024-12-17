@@ -11,6 +11,8 @@ async function bootstrap() {
         origin: 'http://localhost:5173',
         credentials: true,
     });
+    const logger = new common_1.Logger('Bootstrap');
+    logger.log('Démarrage de l\'application...');
     app.useGlobalPipes(new common_1.ValidationPipe());
     app.use(cookieParser());
     const config = new swagger_1.DocumentBuilder()
@@ -22,6 +24,7 @@ async function bootstrap() {
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('api', app, document);
     await app.listen(3000);
+    logger.log('Application démarrée sur le port 3000');
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

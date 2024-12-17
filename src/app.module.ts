@@ -22,6 +22,8 @@ import { DocumentBien } from './models/document-bien.model';
 import { ReleveMensuel } from './models/releve-mensuel.model';
 import { Notification } from './models/notification.model';
 import { Bail } from './models/bail.model';
+import { FilesModule } from './modules/FilesModule/files.module';
+import { PhotoBien } from './models/photo-bien.model';
 
 
 @Module({
@@ -39,8 +41,8 @@ import { Bail } from './models/bail.model';
           force: true, 
           alter: true
         },  
-        logging: console.log, 
-        models: [Administrateur, Proprietaire, Locataire, Bail, Bien, Paiement, DocumentBien, ReleveMensuel, Notification],
+        //logging: console.log, 
+        models: [Administrateur, Proprietaire, Locataire, Bail, Bien, Paiement, DocumentBien, ReleveMensuel, Notification, PhotoBien],
       }),
       inject: [ConfigService],
     }),
@@ -54,6 +56,7 @@ import { Bail } from './models/bail.model';
     RelevesMensuelsModule,
     NotificationsModule,
     AdministrateursModule,
+    FilesModule
   ],
 })
 export class AppModule {}

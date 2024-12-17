@@ -41,6 +41,10 @@ __decorate([
     __metadata("design:type", String)
 ], Proprietaire.prototype, "telephone", void 0);
 __decorate([
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING(15)),
+    __metadata("design:type", String)
+], Proprietaire.prototype, "numero_urgence", void 0);
+__decorate([
     (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.TEXT),
     __metadata("design:type", String)
 ], Proprietaire.prototype, "adresse", void 0);
@@ -52,6 +56,10 @@ __decorate([
     (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING(34)),
     __metadata("design:type", String)
 ], Proprietaire.prototype, "rib", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)(sequelize_typescript_1.DataType.STRING(255)),
+    __metadata("design:type", String)
+], Proprietaire.prototype, "piece_jointe", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.DATE, defaultValue: sequelize_typescript_1.DataType.NOW }),
     __metadata("design:type", Date)
