@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from "@nestjs/common";
 import {
   ApiBearerAuth,
@@ -36,13 +37,13 @@ export class AdministrateursController {
   }
 
   @Get()
-  @ApiOperation({ summary: "Récupérer tous les administrateurs" })
+  @ApiOperation({ summary: "Récupérer tous les administrateurs avec option de recherche" })
   @ApiResponse({
     status: 200,
     description: "Liste des administrateurs récupérée avec succès.",
   })
-  findAll() {
-    return this.administrateursService.findAll();
+  findAll(@Query('search') search?: string) {
+    return this.administrateursService.findAll(search);
   }
 
   @Get(":id")

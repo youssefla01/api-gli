@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Proprietaire } from '../../models/proprietaire.model';
 import { CreateProprietaireDto } from './dto/create-proprietaire.dto';
 import { UpdateProprietaireDto } from './dto/update-proprietaire.dto';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class ProprietairesService {
@@ -18,11 +19,19 @@ export class ProprietairesService {
     });
   }
 
-  async findAll(): Promise<Proprietaire[]> {
-    return this.proprietaireModel.findAll({
-      include: ['biens', 'releves'],
-    });
-  }
+  async findAll(search?: string): Promise<Proprietaire[]> {
+      const whereClause = search
+        ? {
+            [Op.or]: [
+              { nom: { [Op.iLike]: `%${search}%` } },
+              { prenom: { [Op.iLike]: `%${search}%` } },
+              { email: { [Op.iLike]: `%${search}%` } },
+            ],
+          }
+        : undefined;
+    
+      return this.proprietaireModel.findAll();
+    }
 
   async findOne(id: string): Promise<Proprietaire> {
     const proprietaire = await this.proprietaireModel.findByPk(id, {

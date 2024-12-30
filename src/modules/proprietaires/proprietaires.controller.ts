@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 import { ProprietairesService } from './proprietaires.service';
@@ -22,8 +22,8 @@ export class ProprietairesController {
   @Get()
   @ApiOperation({ summary: 'Récupérer tous les propriétaires' })
   @ApiResponse({ status: 200, description: 'Liste des propriétaires récupérée avec succès.' })
-  findAll() {
-    return this.proprietairesService.findAll();
+ findAll(@Query('search') search?: string) {
+    return this.proprietairesService.findAll(search);
   }
 
   @Get(':id')
