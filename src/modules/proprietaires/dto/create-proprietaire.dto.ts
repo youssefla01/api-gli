@@ -13,6 +13,7 @@ export class CreateProprietaireDto {
   prenom: string;
 
   @ApiProperty({ description: "Adresse e-mail du propriétaire" })
+  @IsOptional()
   @IsEmail()
   email: string;
 
@@ -32,11 +33,13 @@ export class CreateProprietaireDto {
   adresse: string;
 
   @ApiProperty({ description: "Identifiant fiscal du propriétaire" })
+  @IsOptional()
   @IsString()
   @Length(1, 50)
   identifiant_fiscal: string;
 
   @ApiProperty({ description: "RIB du propriétaire" })
+  @IsOptional()
   @IsString()
   @Length(1, 34)
   rib: string;

@@ -4,6 +4,7 @@ import { Administrateur } from '../../models/administrateur.model';
 import { CreateAdministrateurDto } from './dto/create-administrateur.dto';
 import { UpdateAdministrateurDto } from './dto/update-administrateur.dto';
 import * as bcrypt from 'bcryptjs';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class AdministrateursService {
@@ -22,12 +23,23 @@ export class AdministrateursService {
       date_creation: new Date(),
     });
   }
-
-  async findAll(): Promise<Administrateur[]> {
+  async findAll(search?: string): Promise<Administrateur[]> {
+    const whereClause = search
+      ? {
+          [Op.or]: [
+            { nom: { [Op.iLike]: `%${search}%` } },
+            { prenom: { [Op.iLike]: `%${search}%` } },
+            { email: { [Op.iLike]: `%${search}%` } },
+          ],
+        }
+      : undefined;
+  
     return this.administrateurModel.findAll({
+      where: whereClause,
       attributes: { exclude: ['mot_de_passe'] },
     });
   }
+  
 
   async findOne(id: string): Promise<Administrateur> {
     const administrateur = await this.administrateurModel.findByPk(id, {
