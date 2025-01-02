@@ -1,8 +1,9 @@
 // src/modules/files/files.service.ts
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Get, Param, Res } from '@nestjs/common';
 import { existsSync, mkdirSync } from 'fs';
 import { diskStorage } from 'multer';
 import { FileHelper } from './utils/file-helper.util';
+import { Response } from 'express';
 
 @Injectable()
 export class FilesService {
@@ -45,5 +46,10 @@ export class FilesService {
         );
       }
     });
+  }
+
+  getFile(@Param('type') type: string, @Param('fileName') fileName: string, @Res() res: Response) {
+    const filePath = type === 'photo' ? `./uploads/photos/${fileName}` : `./uploads/documents/${fileName}`;
+    return res.sendFile(filePath); // Envoyer le fichier au client
   }
 }

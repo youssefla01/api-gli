@@ -13,25 +13,36 @@ export class ProprietairesService {
   ) {}
 
   async create(createProprietaireDto: CreateProprietaireDto): Promise<Proprietaire> {
+    const sanitizedData = Object.fromEntries(
+      Object.entries(createProprietaireDto).map(([key, value]) => [
+        key,
+        value === '' ? null : value
+      ])
+    );
     return this.proprietaireModel.create({
-      ...createProprietaireDto,
+      ...sanitizedData,
       date_creation: new Date(),
     });
   }
 
   async findAll(search?: string): Promise<Proprietaire[]> {
-      const whereClause = search
-        ? {
-            [Op.or]: [
-              { nom: { [Op.iLike]: `%${search}%` } },
-              { prenom: { [Op.iLike]: `%${search}%` } },
-              { email: { [Op.iLike]: `%${search}%` } },
-            ],
-          }
-        : undefined;
-    
-      return this.proprietaireModel.findAll();
-    }
+    const whereClause = search
+      ? {
+          [Op.or]: [
+            { nom: { [Op.iLike]: `%${search}%` } },
+            { prenom: { [Op.iLike]: `%${search}%` } },
+            { email: { [Op.iLike]: `%${search}%` } },
+          ],
+        }
+      : undefined;
+  
+    // Ajout de l'option order pour trier par date de création
+    return this.proprietaireModel.findAll({
+      where: whereClause,
+      order: [['createdAt', 'DESC']], // Trier par 'createdAt' (décroissant)
+    });
+  }
+  
 
   async findOne(id: string): Promise<Proprietaire> {
     const proprietaire = await this.proprietaireModel.findByPk(id, {
@@ -43,6 +54,18 @@ export class ProprietairesService {
     }
 
     return proprietaire;
+  }
+
+  async findByEmail(email: string): Promise<Proprietaire | null> {
+    return this.proprietaireModel.findOne({
+      where: { email },
+    });
+  }
+
+  async findByPhone(phone: string): Promise<Proprietaire | null> {
+    return this.proprietaireModel.findOne({
+      where: { telephone: phone },
+    });
   }
 
   async update(id: string, updateProprietaireDto: UpdateProprietaireDto): Promise<Proprietaire> {

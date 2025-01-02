@@ -17,31 +17,59 @@ export class Proprietaire extends Model {
   @Column(DataType.STRING(100))
   prenom: string;
 
-  @Column({ type: DataType.STRING(100), unique: true })
-  email: string;
+  @Column({
+    type: DataType.STRING(100),
 
-  @Column(DataType.STRING(15))
+    allowNull: true,  
+  })
+  email: string | null;
+
+  @Column({
+    type: DataType.STRING(15),
+    unique: true,
+    allowNull: false, 
+  })
   telephone: string;
 
-  @Column(DataType.STRING(15))
-  numero_urgence: string;
+  @Column({
+    type: DataType.STRING(15),
+    allowNull: true,  
+  })
+  numero_urgence: string | null;
 
-  @Column(DataType.TEXT)
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,  // Ce champ est obligatoire
+  })
   adresse: string;
 
-  @Column(DataType.STRING(50))
-  identifiant_fiscal: string;
+  @Column({
+    type: DataType.STRING(50),
+    allowNull: true,  // Autoriser null pour l'identifiant fiscal
+  })
+  identifiant_fiscal: string | null;
 
-  @Column(DataType.STRING(34))
-  rib: string;
+  @Column({
+    type: DataType.STRING(34),
+    allowNull: true,  // Autoriser null pour le RIB
+  })
+  rib: string | null;
 
-  @Column(DataType.STRING(255))
-  piece_jointe: string; // Stocke le nom ou le chemin du fichier joint
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,  // Autoriser null pour la pièce jointe
+  })
+  piece_jointe: string | null;
 
-  @Column({ type: DataType.DATE, defaultValue: DataType.NOW })
+  @Column({
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
+  })
   date_creation: Date;
 
-  @Column(DataType.DATE)
+  @Column({
+    type: DataType.DATE,
+  })
   date_mise_a_jour: Date;
 
   @HasMany(() => Bien)
