@@ -6,14 +6,23 @@ import { UpdateLocataireDto } from './dto/update-locataire.dto';
 
 @Injectable()
 export class LocatairesService {
+  findByPhone(telephone: string) {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     @InjectModel(Locataire)
     private locataireModel: typeof Locataire,
   ) {}
 
   async create(createLocataireDto: CreateLocataireDto): Promise<Locataire> {
+    const sanitizedData = Object.fromEntries(
+      Object.entries(createLocataireDto).map(([key, value]) => [
+        key,
+        value === '' ? null : value
+      ])
+    );
     return this.locataireModel.create({
-      ...createLocataireDto,
+      ...sanitizedData,
       date_creation: new Date(),
     });
   }
@@ -41,6 +50,21 @@ export class LocatairesService {
     
     await locataire.update({
       ...updateLocataireDto,
+      date_mise_a_jour: new Date(),
+    });
+
+    return locataire;
+  }
+  
+  async updateStatus(id: string, statut: string): Promise<Locataire> {
+    const locataire = await this.findOne(id);
+
+    if (!locataire) {
+      throw new NotFoundException(`Locataire avec l'ID ${id} non trouvé`);
+    }
+
+    await locataire.update({
+      statut,
       date_mise_a_jour: new Date(),
     });
 

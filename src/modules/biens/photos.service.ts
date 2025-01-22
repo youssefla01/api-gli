@@ -1,38 +1,44 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { join } from 'path';
+import { existsSync, unlinkSync } from 'fs';
 
-
-import { PhotoBien } from 'src/models/photo-bien.model';
 import { FileHelper } from '../FilesModule/utils/file-helper.util';
+import { Photo } from 'src/models/photo.model';
 
 @Injectable()
 export class PhotosService {
   constructor(
-    @InjectModel(PhotoBien) private photoBienModel: typeof PhotoBien,
+    @InjectModel(Photo)
+    private photoModel: typeof Photo,
   ) {}
 
   async savePhotos(bienId: string, photos: Express.Multer.File[]): Promise<void> {
-    try {
-      // Validation des extensions
-      photos.forEach(photo => {
-        if (!FileHelper.isImage(photo)) {
-          throw new BadRequestException(`Format de photo invalide pour ${photo.originalname}`);
-        }
+    for (const photo of photos) {
+      await this.photoModel.create({
+        bienId,
+        filename: photo.filename,
+        path: photo.path,
       });
+    }
+  }
 
-      // Création des entrées dans la base de données
-      const photosToSave = photos.map(photo => ({
-        bien_id: bienId,
-        url: photo.path,
-        description: `Photo pour le bien ${bienId}`,
-        originalname: photo.originalname,
-      }));
+  async deletePhoto(photoId: string): Promise<void> {
+    const photo = await this.photoModel.findByPk(photoId);
+    if (photo) {
+      // Supprimer le fichier physique
+      const filePath = join(process.cwd(), photo.path);
+      if (existsSync(filePath)) {
+        unlinkSync(filePath);
+      }
+      await photo.destroy();
+    }
+  }
 
-      await this.photoBienModel.bulkCreate(photosToSave);
-    } catch (error) {
-      throw new BadRequestException(
-        `Erreur lors de la sauvegarde des photos : ${error.message}`,
-      );
+  async deletePhotosByBienId(bienId: string): Promise<void> {
+    const photos = await this.photoModel.findAll({ where: { bienId } });
+    for (const photo of photos) {
+      await this.deletePhoto(photo.id);
     }
   }
 }

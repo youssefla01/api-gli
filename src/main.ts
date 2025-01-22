@@ -8,9 +8,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'http://localhost:5173',  
-    credentials: true, 
+    origin: [
+      'http://localhost:5173',
+      'https://zp1v56uxy8rdx5ypatb0ockcb9tr6a-oci3--5173--1b4252dd.local-credentialless.webcontainer-api.io/'
+    ],
+    credentials: true
   });
+  
 
   // Par défaut, NestJS affiche des logs avec les méthodes suivantes :
   const logger = new Logger('Bootstrap');  // Personnalisation du logger

@@ -1,7 +1,7 @@
-import { Column, Model, Table, DataType, HasMany } from 'sequelize-typescript';
-import { Bail } from './bail.model';
+import { Column, Model, Table, DataType, HasMany } from "sequelize-typescript";
+import { Bail } from "./bail.model";
 
-@Table({ tableName: 'locataires' })
+@Table({ tableName: "locataires" })
 export class Locataire extends Model {
   @Column({
     type: DataType.UUID,
@@ -52,13 +52,23 @@ export class Locataire extends Model {
   @Column(DataType.TEXT)
   piece_identite: string; // Référence au fichier pièce d'identité
 
-  @Column(DataType.TEXT)
-  piece_jointe: string; // Autres documents attachés au locataire
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,  // Autoriser null pour la pièce jointe
+  })
+  piece_jointe: string | null;// Autres documents attachés au locataire
+
+  @Column(DataType.STRING(100))
+  profession: string;
+  
+  @Column(DataType.FLOAT)
+  revenu_mensuel: number;
+  
 
   @Column(DataType.TEXT)
   commentaire: string; // Remarques ou notes sur le locataire
 
-  @Column({ type: DataType.STRING(20), defaultValue: 'Actif' })
+  @Column({ type: DataType.STRING(20), defaultValue: "Actif" })
   statut: string;
 
   @Column({ type: DataType.DATE, defaultValue: DataType.NOW })

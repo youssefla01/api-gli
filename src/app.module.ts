@@ -24,6 +24,9 @@ import { Notification } from './models/notification.model';
 import { Bail } from './models/bail.model';
 import { FilesModule } from './modules/FilesModule/files.module';
 import { PhotoBien } from './models/photo-bien.model';
+import { Photo } from './models/photo.model';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 
 @Module({
@@ -36,13 +39,20 @@ import { PhotoBien } from './models/photo-bien.model';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         ...configService.get('database'),
+        models: [
+          Administrateur,
+          Proprietaire,
+          Locataire,
+          Bail,
+          Bien,
+          Paiement,
+          DocumentBien,
+          ReleveMensuel,
+          Notification,
+          Photo
+        ],
         synchronize: true,
-        sync: {
-          force: true, 
-          alter: true
-        },  
-        //logging: console.log, 
-        models: [Administrateur, Proprietaire, Locataire, Bail, Bien, Paiement, DocumentBien, ReleveMensuel, Notification, PhotoBien],
+        sync: { force: false, alter: true },
       }),
       inject: [ConfigService],
     }),
@@ -56,7 +66,11 @@ import { PhotoBien } from './models/photo-bien.model';
     RelevesMensuelsModule,
     NotificationsModule,
     AdministrateursModule,
-    FilesModule
+    FilesModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
   ],
 })
 export class AppModule {}

@@ -1,37 +1,50 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { DocumentBien } from 'src/models/document-bien.model';
-import { FileHelper } from '../FilesModule/utils/file-helper.util';
-
+import { join } from 'path';
+import { existsSync, unlinkSync } from 'fs';
 
 @Injectable()
 export class DocumentsService {
   constructor(
-    @InjectModel(DocumentBien) private documentBienModel: typeof DocumentBien,
+    @InjectModel(DocumentBien)
+    private documentModel: typeof DocumentBien,
   ) {}
 
   async saveDocuments(bienId: string, documents: Express.Multer.File[]): Promise<void> {
-    try {
-      // Validation des extensions
-      documents.forEach(document => {
-        if (!FileHelper.isDocument(document)) {
-          throw new BadRequestException(`Format de document invalide pour ${document.originalname}`);
-        }
-      });
+    console.log('Saving documents for bien:', bienId);
+    console.log('Documents to save:', documents);
 
-      // Création des entrées dans la base de données
-      const documentsToSave = documents.map(document => ({
-        bien_id: bienId,
-        nom_document: document.originalname,
-        chemin_document: document.path,
-        type_document: 'document',
-      }));
+    for (const document of documents) {
+      try {
+        const savedDoc = await this.documentModel.create({
+          bienId,
+          filename: document.filename,
+          path: document.path,
+        });
+        console.log('Saved document:', savedDoc.toJSON());
+      } catch (error) {
+        console.error('Error saving document:', error);
+        throw error;
+      }
+    }
+  }
 
-      await this.documentBienModel.bulkCreate(documentsToSave);
-    } catch (error) {
-      throw new BadRequestException(
-        `Erreur lors de la sauvegarde des documents : ${error.message}`,
-      );
+  async deleteDocument(documentId: string): Promise<void> {
+    const document = await this.documentModel.findByPk(documentId);
+    if (document) {
+      const filePath = join(process.cwd(), document.path);
+      if (existsSync(filePath)) {
+        unlinkSync(filePath);
+      }
+      await document.destroy();
+    }
+  }
+
+  async deleteDocumentsByBienId(bienId: string): Promise<void> {
+    const documents = await this.documentModel.findAll({ where: { bienId } });
+    for (const document of documents) {
+      await this.deleteDocument(document.id);
     }
   }
 }

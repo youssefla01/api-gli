@@ -1,6 +1,6 @@
 import { IsString, IsEmail, IsOptional, Length, ValidateIf, IsJSON, IsArray, ArrayNotEmpty, IsObject } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Json } from 'sequelize/types/utils';
+
 
 export class CreateProprietaireDto {
   @ApiProperty({ description: "Nom du propriétaire" })

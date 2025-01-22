@@ -32,58 +32,32 @@ export class BiensController {
   @ApiOperation({ summary: 'Créer un nouveau bien' })
   @ApiResponse({ status: 201, description: 'Bien créé avec succès.' })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileFieldsInterceptor([
-    { name: 'photos', maxCount: 10 },
-    { name: 'documents', maxCount: 10 }
-  ], {
-    storage: diskStorage({
-      destination: (req, file, cb) => {
-        // Déterminer le dossier de destination en fonction du type de fichier
-        const folder = file.fieldname === 'photos' ? 'uploads/photos' : 'uploads/documents';
-        cb(null, folder);
-      },
-      filename: (req, file, cb) => {
-        const fileName = FileHelper.generateFileName(file);
-        console.log(`Saving ${file.fieldname}: ${fileName}`);
-        cb(null, fileName);
-      }
-    }),
-    fileFilter: (req, file:any, cb) => {
-      const isValid = file.fieldname === 'photos' 
-        ? FileHelper.isImage(file)
-        : FileHelper.isDocument(file);
-        
-      if (!isValid) {
-        cb(new BadRequestException(`Invalid file type for ${file.fieldname}`), false);
-      }
-      cb(null, true);
-    }
-  }))
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'photos', maxCount: 10 },
+      { name: 'documents', maxCount: 10 }
+    ], {
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          const folder = file.fieldname === 'photos' ? 'photos' : 'documents';
+          const uploadPath = `uploads/${folder}`;
+          if (!existsSync(uploadPath)) {
+            mkdirSync(uploadPath, { recursive: true });
+          }
+          cb(null, uploadPath);
+        },
+        filename: (req, file, cb) => {
+          const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
+          cb(null, `${uniqueSuffix}-${file.originalname}`);
+        }
+      })
+    })
+  )
   async create(
     @Body() createBienDto: CreateBienDto,
-    @UploadedFiles() files: { 
-      photos?: Express.Multer.File[],
-      documents?: Express.Multer.File[] 
-    }
+    @UploadedFiles() files: { photos?: Express.Multer.File[], documents?: Express.Multer.File[] }
   ) {
-    console.log('Files received:', files);
-    console.log('DTO received:', createBienDto);
-
-    try {
-      const bien = await this.biensService.create(
-        createBienDto,
-        files?.photos || [],
-        files?.documents || []
-      );
-
-      return {
-        status: 201,
-        message: 'Bien créé avec succès',
-        data: bien
-      };
-    } catch (error) {
-      throw new BadRequestException(error.message);
-    }
+    return this.biensService.create(createBienDto, files?.photos, files?.documents);
   }
 
   @Get()
@@ -112,8 +86,40 @@ export class BiensController {
   @ApiOperation({ summary: 'Mettre à jour un bien' })
   @ApiResponse({ status: 200, description: 'Bien mis à jour avec succès.' })
   @ApiResponse({ status: 404, description: 'Bien non trouvé.' })
-  update(@Param('id') id: string, @Body() updateBienDto: UpdateBienDto) {
-    return this.biensService.update(id, updateBienDto);
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'photos', maxCount: 10 },
+      { name: 'documents', maxCount: 10 }
+    ], {
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          const folder = file.fieldname === 'photos' ? 'photos' : 'documents';
+          const uploadPath = `uploads/${folder}`;
+          if (!existsSync(uploadPath)) {
+            mkdirSync(uploadPath, { recursive: true });
+          }
+          cb(null, uploadPath);
+        },
+        filename: (req, file, cb) => {
+          const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
+          cb(null, `${uniqueSuffix}-${file.originalname}`);
+        }
+      })
+    })
+  )
+  async update(
+    @Param('id') id: string,
+    @Body() updateBienDto: UpdateBienDto,
+    @UploadedFiles() files: { photos?: Express.Multer.File[], documents?: Express.Multer.File[] }
+  ) {
+    return this.biensService.update(id, {
+      ...updateBienDto,
+      photos: files?.photos,
+      documents: files?.documents,
+      existingPhotos: updateBienDto.existingPhotos || [],
+      existingDocuments: updateBienDto.existingDocuments || [],
+    });
   }
 
   @Delete(':id')
